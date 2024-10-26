@@ -14,13 +14,13 @@ const Header = () => {
 
                 <nav className="hidden md:flex items-center md:gap-5">
                     <ul className="flex items-center md:gap-10">
-                        <li><Link className="text-violet-300" href="">Experimentar Estorai</Link></li>
-                        <li><Link className="text-violet-300" href="">Criar Histórias</Link></li>
+                        <li><Link className="text-violet-300" href="/create-story">Experimentar Estorai</Link></li>
+                        <li><Link className="text-violet-300" href="/create-story">Criar Histórias</Link></li>
                         <li><Link className="text-violet-300" href="">Sobre Nós</Link></li>
                         <li><Link className="text-violet-300" href="">WorldKids</Link></li>
                     </ul>
 
-                    <Link href={"/"}>
+                    <Link href={"/create-story"}>
                         <button className="bg-violet-600 text-white p-2 rounded-3xl">
                             Fazer Login
                         </button>

@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String        @id // ID fornecido pelo Clerk
+  name        String?       // Nome do usuário (opcional, caso queira exibir no app)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  books       Book[]        // Relacionamento com os livros criados ou adquiridos pelo usuário
+  subscriptions Subscription[] // Relacionamento com as assinaturas do usuário
+}
+
+model Book {
+  id          Int           @id @default(autoincrement())
+  title       String
+  cover       String        // URL ou caminho da capa do livro
+  createdBy   String        // ID do usuário que criou o livro (vinculado ao ID do Clerk)
+  user        User          @relation(fields: [createdBy], references: [id])
+  pages       Page[]        // Relacionamento com as páginas do livro
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Page {
+  id          Int           @id @default(autoincrement())
+  bookId      Int           // ID do livro ao qual a página pertence
+  book        Book          @relation(fields: [bookId], references: [id])
+  content     String        // Conteúdo textual da página, caso necessário
+  image       String        // URL ou caminho da imagem específica da página
+  audio       Audio?        // Relacionamento opcional com o áudio da página
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Audio {
+  id          Int           @id @default(autoincrement())
+  pageId      Int?          @unique // ID da página à qual o áudio pertence (opcional) e agora é único
+  page        Page?         @relation(fields: [pageId], references: [id])
+  url         String        // URL ou caminho do arquivo de áudio
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Subscription {
+  id          Int           @id @default(autoincrement())
+  userId      String        // ID do usuário que possui a assinatura (vinculado ao ID do Clerk)
+  user        User          @relation(fields: [userId], references: [id])
+  type        String        // Tipo da assinatura (ex: "Mensal", "Anual")
+  status      String        // Status da assinatura (ex: "Ativa", "Cancelada")
+  startDate   DateTime      @default(now()) // Data de início da assinatura
+  endDate     DateTime?     // Data de término da assinatura, se aplicável
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+

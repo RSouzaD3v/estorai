@@ -24,11 +24,11 @@ export default function Home() {
                   uma das plantaformas mais inclusivas do mercado!
                 </p>
 
-                <Link href={"/"}>
+                <Link href={"/create-story"}>
                   <button className="p-2 rounded-3xl bg-gradient-to-r from-violet-500 to-rose-500">Fazer Login</button>
                 </Link>
             </div>
-            <div className="w-[380px] h-[380px] md:w-[480px] md:h-[480px] overflow-hidden rounded-xl">
+            <div className="w-[100%] min-h-[300px] md:w-[480px] md:h-[480px] overflow-hidden rounded-xl">
               <Image src={BoyImage} alt="Menino Voando" />
             </div>
           </section>
