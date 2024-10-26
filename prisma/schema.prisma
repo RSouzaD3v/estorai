@@ -16,6 +16,7 @@ datasource db {
 model User {
   id          String        @id // ID fornecido pelo Clerk
   name        String?       // Nome do usuário (opcional, caso queira exibir no app)
+  email       String        @unique
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
