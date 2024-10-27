@@ -71,13 +71,13 @@ const CreateStory = () => {
 
                 <div className="bg-black">
                     <form>
-                        <div className="flex items-center flex-wrap justify-between">
-                            <div>
+                        <div className="flex md:flex-row flex-col items-center flex-wrap justify-between">
+                            <div className="w-full md:w-[450px]">
                                 <h1 className="md:text-xl text-violet-200 font-bold">Conteúdo da história:</h1>
                                 <textarea
                                     onChange={(e) => setContent(e.target.value)}
                                     name="content"
-                                    className="w-[450px] h-[150px] rounded-lg p-5 shadow-none outline-none resize-none
+                                    className="w-full md:w-[450px] h-[150px] rounded-lg p-5 shadow-none outline-none resize-none
                                     placeholder-gray-500 text-[#323232] font-normal flex-1 pr-14 
                                     lg:pr-12 text-sm lg:text-lg bg-white"
                                     rows={4}
@@ -89,7 +89,7 @@ const CreateStory = () => {
                             <div>
                                 <h1 className="md:text-xl text-violet-200 font-bold">Personalizar História:</h1>
                                 
-                                <div className="flex items-center gap-2 flex-wrap">
+                                <div className="flex items-center justify-center gap-2 flex-wrap">
                                     {tiposLivros.map((v) => (
                                         <TypeStoryBook
                                             key={v.id}
@@ -103,15 +103,17 @@ const CreateStory = () => {
                             </div>
                         </div>
 
-                        {loading ? (
-                            <div className="m-2">
-                                <Spinner color="secondary" />
-                            </div>
-                        ) : (
-                            <button disabled={loading} 
-                            onClick={CreateStory} 
-                            className="p-2 my-3 rounded-3xl bg-gradient-to-r from-violet-500 to-rose-500">Enviar História</button>
-                        )}
+                        <div className="text-center md:text-left">
+                            {loading ? (
+                                <div className="m-2">
+                                    <Spinner color="secondary" />
+                                </div>
+                            ) : (
+                                <button disabled={loading} 
+                                onClick={CreateStory} 
+                                className="p-2 my-3 rounded-3xl bg-gradient-to-r from-violet-500 to-rose-500">Enviar História</button>
+                            )}
+                        </div>
                     </form>
                 </div>
             </Container>
