@@ -30,7 +30,7 @@ const CreateStory = () => {
         try{
             const result = await chatSession.sendMessage(promptFinal);
             console.log(result?.response.text());
-            saveStory(result.response.text());
+            await saveStory(result.response.text(), "manual", "manual", "05-08", "Cut Paper");
             setLoading(false);
         }catch(e){
             console.log(e);
