@@ -13,57 +13,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Modelos
+
 model User {
-  id          String        @id // ID fornecido pelo Clerk
-  name        String?       // Nome do usuário (opcional, caso queira exibir no app)
-  email       String        @unique
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id                 String      @id // ID fornecido pelo Clerk
+  name               String?     // Nome do usuário (opcional)
+  email              String
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  subscriptionStatus String      // Status da assinatura mensal (ex: "Ativa", "Inativa", "Expirada")
+  subscriptionType   String      // Tipo da assinatura (ex: "Mensal", "Anual"), se precisar de mais granularidade
 
-  books       Book[]        // Relacionamento com os livros criados ou adquiridos pelo usuário
-  subscriptions Subscription[] // Relacionamento com as assinaturas do usuário
+  stories            StoryData[] // Relacionamento com histórias criadas pelo usuário
 }
 
-model Book {
-  id          Int           @id @default(autoincrement())
-  title       String
-  cover       String        // URL ou caminho da capa do livro
-  createdBy   String        // ID do usuário que criou o livro (vinculado ao ID do Clerk)
-  user        User          @relation(fields: [createdBy], references: [id])
-  pages       Page[]        // Relacionamento com as páginas do livro
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-}
+model StoryData {
+  id          Int      @id @default(autoincrement())
+  storyId     String
+  storySubject String   // Assunto ou tema da história (ex: "Animais", "Aventura")
+  storyType   String    // Tipo de história (ex: "Fantasia", "Educação")
+  ageGroup    String    // Faixa etária recomendada (ex: "3-5 anos", "6-8 anos")
+  imageStyle  String    // Estilo da imagem (ex: "Cartoon", "Realista")
+  output      Json      // Dados JSON contendo o conteúdo da história (ex: páginas, texto, imagens, áudios)
+  createdBy   String    // ID do usuário que criou a história
+  user        User      @relation(fields: [createdBy], references: [id])
 
-model Page {
-  id          Int           @id @default(autoincrement())
-  bookId      Int           // ID do livro ao qual a página pertence
-  book        Book          @relation(fields: [bookId], references: [id])
-  content     String        // Conteúdo textual da página, caso necessário
-  image       String        // URL ou caminho da imagem específica da página
-  audio       Audio?        // Relacionamento opcional com o áudio da página
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-}
-
-model Audio {
-  id          Int           @id @default(autoincrement())
-  pageId      Int?          @unique // ID da página à qual o áudio pertence (opcional) e agora é único
-  page        Page?         @relation(fields: [pageId], references: [id])
-  url         String        // URL ou caminho do arquivo de áudio
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-}
-
-model Subscription {
-  id          Int           @id @default(autoincrement())
-  userId      String        // ID do usuário que possui a assinatura (vinculado ao ID do Clerk)
-  user        User          @relation(fields: [userId], references: [id])
-  type        String        // Tipo da assinatura (ex: "Mensal", "Anual")
-  status      String        // Status da assinatura (ex: "Ativa", "Cancelada")
-  startDate   DateTime      @default(now()) // Data de início da assinatura
-  endDate     DateTime?     // Data de término da assinatura, se aplicável
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 

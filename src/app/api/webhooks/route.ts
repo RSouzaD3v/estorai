@@ -61,7 +61,9 @@ export async function POST(req: Request) {
       data: {
         id: evt.data.id,
         name: evt.data.first_name,
-        email: evt.data.email_addresses[0].email_address
+        email: evt.data.email_addresses[0].email_address,
+        subscriptionStatus: "Free",
+        subscriptionType: "Free"
       }
     });
 

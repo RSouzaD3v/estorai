@@ -29,9 +29,9 @@ export const MenuMobHeader = () => {
                             <li><Link className="text-white" href="">WorldKids</Link></li>
                         </ul>
 
-                        <Link className="mt-20" href={"/"}>
+                        <Link className="mt-20" href={"/create-story"}>
                             <button className="bg-violet-600 text-white p-2 rounded-3xl">
-                                Fazer Login
+                                Criar História
                             </button>
                         </Link>
                 </nav>
