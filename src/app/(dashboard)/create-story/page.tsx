@@ -6,6 +6,7 @@ import { Container } from "@/app/_components/Container";
 import BoyImage from '../../../../public/flyeind-boy.jpg';
 import Header from "@/app/_components/Header";
 import { chatSession } from "@/config/GeminiAi";
+import {Spinner} from "@nextui-org/spinner";
 
 const CreateStory = () => {
     const [typeBook, setTypeBook] = useState<string>("Random");
@@ -102,9 +103,15 @@ const CreateStory = () => {
                             </div>
                         </div>
 
-                        <button disabled={loading} 
-                        onClick={CreateStory} 
-                        className="p-2 my-3 rounded-3xl bg-gradient-to-r from-violet-500 to-rose-500">Enviar História</button>
+                        {loading ? (
+                            <div className="m-2">
+                                <Spinner color="secondary" />
+                            </div>
+                        ) : (
+                            <button disabled={loading} 
+                            onClick={CreateStory} 
+                            className="p-2 my-3 rounded-3xl bg-gradient-to-r from-violet-500 to-rose-500">Enviar História</button>
+                        )}
                     </form>
                 </div>
             </Container>
