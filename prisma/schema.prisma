@@ -35,6 +35,7 @@ model StoryData {
   ageGroup    String    // Faixa etária recomendada (ex: "3-5 anos", "6-8 anos")
   imageStyle  String    // Estilo da imagem (ex: "Cartoon", "Realista")
   output      Json      // Dados JSON contendo o conteúdo da história (ex: páginas, texto, imagens, áudios)
+  coverImage  String
   createdBy   String    // ID do usuário que criou a história
   user        User      @relation(fields: [createdBy], references: [id])
 

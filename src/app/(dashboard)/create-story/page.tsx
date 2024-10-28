@@ -7,6 +7,7 @@ import BoyImage from '../../../../public/flyeind-boy.jpg';
 import Header from "@/app/_components/Header";
 import { chatSession } from "@/config/GeminiAi";
 import {Spinner} from "@nextui-org/spinner";
+import axios from 'axios';
 
 const CreateStory = () => {
     const [typeBook, setTypeBook] = useState<string>("Random");
@@ -30,8 +31,19 @@ const CreateStory = () => {
 
         try{
             const result = await chatSession.sendMessage(promptFinal);
-            console.log(result?.response.text());
-            await saveStory(result.response.text(), "manual", "manual", "05-08", "Cut Paper");
+            const story = await JSON.parse(result?.response.text());
+            const imageResp = await axios.post("/api/generate-image", {
+                prompt: `The context of image is ${story?.story_name}, the style of image is Realistic cartoon`
+            });
+            
+            const AiImageUrl = imageResp?.data?.response.output[0];
+
+            const imageResult = await axios.post("/api/save-image", {
+                url: AiImageUrl
+            });
+
+            const firebaseStorageImageUrl = imageResult.data.imageUrl;
+            await saveStory(result.response.text(), "null", "null", "05-08", "Realistic Cartoon", firebaseStorageImageUrl);
             setLoading(false);
         }catch(e){
             console.log(e);
@@ -41,14 +53,14 @@ const CreateStory = () => {
 
     const saveStory = async (output: string, 
         subject: string = "manual", 
-        type: string = "manual", ageGroup: string = "05-08", imageStyle: string = "Cut paper") => {
+        type: string = "manual", ageGroup: string = "05-08", imageStyle: string = "Cut paper", imageUrl: string) => {
         try {
             const response = await fetch("/api/saveStory", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json", // Define o tipo de conteúdo como JSON
                 },
-                body: JSON.stringify({ story: output, subject, type, ageGroup, imageStyle }), // Envia o conteúdo da história
+                body: JSON.stringify({ story: output, subject, type, ageGroup, imageStyle, imageUrl }), // Envia o conteúdo da história
             });
     
             if (!response.ok) {
