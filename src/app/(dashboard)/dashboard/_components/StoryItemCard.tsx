@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/button";
-import { CardFooter, Card, CardHeader } from "@nextui-org/card";
+import { CardFooter, Card } from "@nextui-org/card";
 import Image from "next/image";
 import Link from "next/link";
 
