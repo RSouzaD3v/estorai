@@ -5,7 +5,7 @@ import princesaRei from '../../../../../public/princesa-e-rei.jpg';
 
 export default function Page() {
   return (
-    <div className='md:flex justify-between items-center'>
+    <div className='flex md:flex-row flex-col md:justify-between justify-center items-center'>
       <div className='w-1/2 h-screen flex items-center justify-center'>
         <SignUp />
       </div>

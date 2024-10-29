@@ -5,7 +5,7 @@ import manSeeBird from '../../../../../public/man-see-bird.jpg';
 
 export default function Page() {
   return (
-    <div className='md:flex justify-between items-center'>
+    <div className='flex md:flex-row flex-col md:justify-between justify-center items-center'>
       <div className='hidden md:block w-1/2 h-screen overflow-hidden object-cover'>
         <Image className='w-[100%] h-screen' src={manSeeBird} alt='Homem olhando para o pássaro.' />
       </div>
