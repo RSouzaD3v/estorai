@@ -6,6 +6,8 @@ import StoryPages from "../_components/StoryPages";
 import LastPage from "@/app/_components/LastPage";
 
 import { IoIosArrowDroprightCircle, IoIosArrowDropleftCircle } from 'react-icons/io'
+import CustomLoading from "@/app/_components/CustomLoading";
+import Header from "@/app/_components/Header";
 
 interface Params {
     id: string;
@@ -46,23 +48,28 @@ const ViewStory = ({ params }: ViewStoryProps) => {
     const [story, setStory] = useState<ApiResponse | null>(null);
     const unwrapperParams = use(params);
     const [count, setCount] = useState<number>(0);
+    const [Loading, setLoading] = useState<boolean>(false);
 
     const bookRef = useRef<PageFlipInstance | null>(null);
 
     useEffect(() => {
         const getStory = async () => {
+            setLoading(true);
             const response = await fetch(`/api/getStory?id=${unwrapperParams.id}`);
             const data: ApiResponse = await response.json();
             console.log(data.data.coverImage);
             console.log(data.data);
             setStory(data);
+
+            setLoading(false);
         };
         
         getStory();
     }, [unwrapperParams.id]);
 
     return (
-        <div className="text-white">
+        <div className="text-white bg-black w-full h-full">
+            <Header logado={true} />
             {story ? (
                 <div className="p-10 md:px-20 lg:px-40 flex items-center justify-center flex-col">
                     <h2 className="font-bold text-4xl text-center p-10 text-violet-500">
@@ -116,7 +123,7 @@ const ViewStory = ({ params }: ViewStoryProps) => {
                 </div>
             ) : (
                 <div>
-                    <p>Carregando...</p>
+                    <CustomLoading loading={Loading} />
                 </div>
             )}
         </div>

@@ -17,8 +17,8 @@ const Header = ({ logado = false }: {logado?: boolean;}) => {
                     <ul className="flex items-center md:gap-10">
                         <li><Link className="text-violet-300" href="/create-story">Experimentar Estorai</Link></li>
                         <li><Link className="text-violet-300" href="/create-story">Criar Histórias</Link></li>
-                        <li><Link className="text-violet-300" href="">Sobre Nós</Link></li>
-                        <li><Link className="text-violet-300" href="">WorldKids</Link></li>
+                        <li><Link className="text-violet-300" href="/about">Sobre Nós</Link></li>
+                        <li><Link className="text-violet-500" href="/dashboard">Minhas Histórias</Link></li>
                     </ul>
 
                 {logado ? (

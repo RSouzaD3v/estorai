@@ -23,10 +23,10 @@ export const MenuMobHeader = () => {
                 <nav className="relative flex items-center flex-col">
                         <button onClick={toggleSidebar} className="text-xl absolute right-0">X</button>
                         <ul className="mt-20 mb-14 flex flex-col gap-10">
-                            <li><Link className="text-white" href="">Experimentar Estorai</Link></li>
-                            <li><Link className="text-white" href="">Criar Histórias</Link></li>
-                            <li><Link className="text-white" href="">Sobre Nós</Link></li>
-                            <li><Link className="text-white" href="">WorldKids</Link></li>
+                            <li><Link className="text-white" href="/create-story">Experimentar Estorai</Link></li>
+                            <li><Link className="text-white" href="/create-story">Criar Histórias</Link></li>
+                            <li><Link className="text-white" href="/about">Sobre Nós</Link></li>
+                            <li><Link className="text-white" href="/dashboard">Minhas Histórias</Link></li>
                         </ul>
 
                         <Link className="mt-20" href={"/create-story"}>

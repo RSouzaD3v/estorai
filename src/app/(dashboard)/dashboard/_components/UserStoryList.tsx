@@ -5,6 +5,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import StoryItemCard from "./StoryItemCard";
+import CustomLoading from "@/app/_components/CustomLoading";
 
 interface StoryOutput {
     story_name: string;
@@ -53,7 +54,7 @@ const UserStoryList = () => {
         <div>
             <h1>Lista de Histórias</h1>
             {loading ? (
-                <p>Carregando histórias...</p>
+                <CustomLoading loading={loading} />
             ) : storyList.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
                     {storyList && storyList.map((item) => (

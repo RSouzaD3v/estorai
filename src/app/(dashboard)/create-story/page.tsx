@@ -8,11 +8,15 @@ import Header from "@/app/_components/Header";
 import { chatSession } from "@/config/GeminiAi";
 import {Spinner} from "@nextui-org/spinner";
 import axios from 'axios';
+import { useRouter } from "next/navigation";
 
 const CreateStory = () => {
     const [typeBook, setTypeBook] = useState<string>("Random");
     const [content, setContent] = useState<string>("story of boy and Magic school");
     const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter();
+
+    
 
     const tiposLivros = [
         { id: 1, tipo: "Comédia", image: BoyImage },
@@ -44,7 +48,9 @@ const CreateStory = () => {
 
             const firebaseStorageImageUrl = imageResult.data.imageUrl;
             await saveStory(result.response.text(), "null", "null", "05-08", "Realistic Cartoon", firebaseStorageImageUrl);
+            await updateCredits(1);
             setLoading(false);
+            router.push('/dashboard');
         }catch(e){
             console.log(e);
             setLoading(false);
@@ -73,6 +79,14 @@ const CreateStory = () => {
             console.error("Erro ao salvar a história:", e);
         }
     };
+
+    const updateCredits = async (credit: number) => {
+        const response = await axios.post('/api/update-credits', {
+            credit
+        });
+
+        console.log("Atualizado", response.data);
+    }
     
 
     return (

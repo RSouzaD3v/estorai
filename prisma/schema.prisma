@@ -23,6 +23,7 @@ model User {
   updatedAt          DateTime    @updatedAt
   subscriptionStatus String      // Status da assinatura mensal (ex: "Ativa", "Inativa", "Expirada")
   subscriptionType   String      // Tipo da assinatura (ex: "Mensal", "Anual"), se precisar de mais granularidade
+  credits            Int         @default(3)
 
   stories            StoryData[] // Relacionamento com histórias criadas pelo usuário
 }
