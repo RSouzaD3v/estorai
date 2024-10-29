@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TypeStoryBook from "@/app/(dashboard)/create-story/_components/TypeStoryBook";
 import { Container } from "@/app/_components/Container";
 import BoyImage from '../../../../public/flyeind-boy.jpg';
@@ -14,10 +14,21 @@ const CreateStory = () => {
     const [typeBook, setTypeBook] = useState<string>("Random");
     const [content, setContent] = useState<string>("story of boy and Magic school");
     const [loading, setLoading] = useState<boolean>(false);
+    const [ credit, setCredit ] = useState<number>(0);
     const router = useRouter();
-
     
+    
+    useEffect(() => {
+        const getCredits = async () => {
+            const response = await axios.get('/api/update-credits');
+            setCredit(response?.data?.credits);
+    
+            console.log(response.data.credits);
+        }
 
+        getCredits();
+    }, []);
+    
     const tiposLivros = [
         { id: 1, tipo: "Comédia", image: BoyImage },
         { id: 2, tipo: "Drama", image: BoyImage },
@@ -27,6 +38,12 @@ const CreateStory = () => {
 
     const CreateStory = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (credit <= 0) {
+            console.log("Saldo insuficiente!");
+            return;
+        };
+
         setLoading(true);
 
         const promptFinal = `create Kids story on description for 5-8 years Kids, language: pt-br,${typeBook} story, 
@@ -86,7 +103,9 @@ const CreateStory = () => {
         });
 
         console.log("Atualizado", response.data);
-    }
+    };
+
+
     
 
     return (
@@ -135,9 +154,12 @@ const CreateStory = () => {
                                     <Spinner color="secondary" />
                                 </div>
                             ) : (
-                                <button disabled={loading} 
-                                onClick={CreateStory} 
-                                className="p-2 my-3 rounded-3xl bg-gradient-to-r from-violet-500 to-rose-500">Enviar História</button>
+                                <div className="flex items-center gap-2">
+                                    <button disabled={loading} 
+                                    onClick={CreateStory} 
+                                    className="p-2 my-3 rounded-3xl bg-gradient-to-r from-violet-500 to-rose-500">Enviar História</button>
+                                    <span>{credit} credits</span>
+                                </div>
                             )}
                         </div>
                     </form>

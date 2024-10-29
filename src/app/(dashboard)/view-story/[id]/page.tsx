@@ -35,14 +35,13 @@ interface ApiResponse {
 }
 
 interface Flips {
-    flipNext?: () => void; // Método opcional para avançar a página
-    flipPrev?: () => void; // Método opcional para voltar a página
+    flipNext?: () => void;
+    flipPrev?: () => void;
 }
 
 interface PageFlipInstance {
-    pageFlip: () => Flips; // A função pageFlip retorna um objeto do tipo Flips
+    pageFlip: () => Flips;
 }
-
 
 const ViewStory = ({ params }: ViewStoryProps) => {
     const [story, setStory] = useState<ApiResponse | null>(null);
@@ -57,10 +56,7 @@ const ViewStory = ({ params }: ViewStoryProps) => {
             setLoading(true);
             const response = await fetch(`/api/getStory?id=${unwrapperParams.id}`);
             const data: ApiResponse = await response.json();
-            console.log(data.data.coverImage);
-            console.log(data.data);
             setStory(data);
-
             setLoading(false);
         };
         
@@ -68,18 +64,19 @@ const ViewStory = ({ params }: ViewStoryProps) => {
     }, [unwrapperParams.id]);
 
     return (
-        <div className="text-white bg-black w-full h-full">
+        <div className="text-white bg-black min-h-screen">
             <Header logado={true} />
+            
             {story ? (
-                <div className="p-10 md:px-20 lg:px-40 flex items-center justify-center flex-col">
-                    <h2 className="font-bold text-4xl text-center p-10 text-violet-500">
+                <div className="p-5 md:px-10 lg:px-20 flex items-center justify-center flex-col">
+                    <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl text-center p-5 text-violet-500">
                         {story.data.output.story_name}
                     </h2>
-                    <div className="relative">
-                        {/*  @ts-expect-error as @ts-ignore */}
+                    <div className="relative w-full flex items-center justify-center">
+                        {/* @ts-expect-error as @ts-ignore */}
                         <HTMLFlipBook
-                            width={500}
-                            height={500}
+                            width={Math.min(300, window.innerWidth - 50)}
+                            height={Math.min(300, window.innerHeight - 50)}
                             showCover={true}
                             className="mt-5"
                             useMouseEvents={false}
@@ -89,7 +86,7 @@ const ViewStory = ({ params }: ViewStoryProps) => {
                                 <BookCoverPage imageUrl={story.data.coverImage} />
                             </div>
                             {story.data.output.chapters.map((chapter, index) => (
-                                <div key={index} className="bg-white p-10">
+                                <div key={index} className="bg-white p-5 md:p-10">
                                     <StoryPages storyChapter={chapter} />
                                 </div>
                             ))}
@@ -98,31 +95,29 @@ const ViewStory = ({ params }: ViewStoryProps) => {
                             </div>
                         </HTMLFlipBook>
 
-                        {count !=0 && 
-                            <div className="absolute -left-8 top-[250px]">
-                                <IoIosArrowDropleftCircle className="text-[60px] text-violet-500" onClick={() => {
+                        {count > 0 && 
+                            <div className="absolute md:left-5 -left-2 top-1/2 transform">
+                                <IoIosArrowDropleftCircle className="text-[40px] md:text-[60px] text-violet-500 cursor-pointer" onClick={() => {
                                     // @ts-expect-error as @ts-ignore
                                     bookRef.current.pageFlip().flipPrev();
                                     setCount(count - 1);
-                                }}/>
+                                }} />
                             </div>
                         }
 
-                        {
-                            count < (story.data.output.chapters.length+1) &&
-                            <div className="absolute -right-8 top-[250px]" onClick={() => {
+                        {count < (story.data.output.chapters.length) && 
+                            <div className="absolute top-1/2 transform md:right-5 -right-2" onClick={() => {
                                 // @ts-expect-error as @ts-ignore
                                 bookRef.current.pageFlip().flipNext();
                                 setCount(count + 1);
                             }}>
-                                <IoIosArrowDroprightCircle className="text-[60px] text-violet-500"/>
+                                <IoIosArrowDroprightCircle className="text-[40px] md:text-[60px] text-violet-500 cursor-pointer" />
                             </div>
                         }
-
                     </div>
                 </div>
             ) : (
-                <div>
+                <div className="flex items-center justify-center min-h-screen">
                     <CustomLoading loading={Loading} />
                 </div>
             )}

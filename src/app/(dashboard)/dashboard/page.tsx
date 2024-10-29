@@ -4,7 +4,7 @@ import UserStoryList from "./_components/UserStoryList";
 
 const Dashboard = () => {
     return (
-        <div className="p-10 md:px-10 lg:px-40">
+        <div className="p-10 md:px-10 lg:px-40 w-full bg-black h-full">
             <Header logado={true} />
             <DashboardHeader />
 

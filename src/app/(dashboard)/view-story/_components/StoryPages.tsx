@@ -48,11 +48,11 @@ const StoryPages = ({ storyChapter }: StoryPagesProps) => {
 
     return (
         <div>
-            <h2 className="text-2xl font-bold text-violet-500 flex justify-between items-center">
+            <h2 className="md:text-2xl text-xl font-bold text-violet-500 flex justify-between items-center">
                 {storyChapter.chapter_title}
-                <span className="text-3xl text-violet-500 cursor-pointer" onClick={() => playSpeech(storyChapter.description)}><IoMdPlayCircle /></span>
+                <span className="md:text-3xl text-2xl text-violet-500 cursor-pointer" onClick={() => playSpeech(storyChapter.description)}><IoMdPlayCircle /></span>
             </h2>
-            <p className="text-xl p-5 mt-3 rounded-lg bg-slate-800 text-white">
+            <p className="text-[11px] p-3 mt-3 rounded-lg bg-slate-800 text-white">
                 {storyChapter.description}
             </p>
         </div>

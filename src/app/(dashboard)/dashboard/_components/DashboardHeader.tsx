@@ -20,9 +20,9 @@ const DashboardHeader = () => {
     }, []);
 
     return (
-        <div className='p-7 bg-violet-500 text-white flex justify-between items-center'>
-            <h2 className='font-bold text-3xl'>Minhas Histórias</h2>
-            <div className='flex items-center gap-1 text-xl'>
+        <div className='md:p-7 p-3 bg-violet-500 text-white flex justify-between items-center'>
+            <h2 className='font-bold text-xl md:text-3xl'>Minhas Histórias</h2>
+            <div className='flex items-center gap-1 text-sm'>
                 <Coins />
                 <span>{credit} Credits</span>
             </div>
