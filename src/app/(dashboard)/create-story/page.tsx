@@ -14,20 +14,9 @@ const CreateStory = () => {
     const [typeBook, setTypeBook] = useState<string>("Random");
     const [content, setContent] = useState<string>("story of boy and Magic school");
     const [loading, setLoading] = useState<boolean>(false);
-    const [ credit, setCredit ] = useState<number>(0);
+    const [credit, setCredit] = useState(0);
     const router = useRouter();
     
-    
-    useEffect(() => {
-        const getCredits = async () => {
-            const response = await axios.get('/api/update-credits');
-            setCredit(response?.data?.credits);
-    
-            console.log(response.data.credits);
-        }
-
-        getCredits();
-    }, []);
     
     const tiposLivros = [
         { id: 1, tipo: "Comédia", image: BoyImage },
@@ -36,13 +25,22 @@ const CreateStory = () => {
         { id: 4, tipo: "Aleátorio", image: BoyImage },
     ];
 
+
+    useEffect(() => {
+        const getCredit = async () => {
+            try {
+                const response = await axios.get('/api/getUserCredit');
+                setCredit(response.data.credit);
+            } catch (e) {
+                console.log(e);
+            }
+        };
+
+        getCredit();
+    }, []);
+
     const CreateStory = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (credit <= 0) {
-            console.log("Saldo insuficiente!");
-            return;
-        };
 
         setLoading(true);
 
@@ -58,16 +56,23 @@ const CreateStory = () => {
             });
             
             const AiImageUrl = imageResp?.data?.response.output[0];
+            // output: [
+            //     'https://replicate.delivery/yhqm/Ann9lKGcrbYrEZYpJsJ4rMQJh5f1xf5ozWoW5LWDldJyS8rTA/out-0.webp'
+            //   ],
+
+            console.log("Imagem que esta sendo enviada para salvar em firebase: ", AiImageUrl);
 
             const imageResult = await axios.post("/api/save-image", {
                 url: AiImageUrl
             });
 
-            const firebaseStorageImageUrl = imageResult.data.imageUrl;
-            console.log(firebaseStorageImageUrl);
+            console.log(imageResult.data);
+
+            const firebaseStorageImageUrl = await imageResult.data.imageUrl;
+            console.log("Resultado da imagem baixada: ", firebaseStorageImageUrl);
             
             await saveStory(result.response.text(), "null", "null", "05-08", "Realistic Cartoon", firebaseStorageImageUrl);
-            await updateCredits(1);
+            await updateCredit(1);
             setLoading(false);
             router.push('/dashboard');
         }catch(e){
@@ -78,7 +83,10 @@ const CreateStory = () => {
 
     const saveStory = async (output: string, 
         subject: string = "manual", 
-        type: string = "manual", ageGroup: string = "05-08", imageStyle: string = "Cut paper", imageUrl: string) => {
+        type: string = "manual", 
+        ageGroup: string = "05-08", 
+        imageStyle: string = "Cut paper", 
+        imageUrl: string) => {
         try {
             const response = await fetch("/api/saveStory", {
                 method: "POST",
@@ -99,14 +107,17 @@ const CreateStory = () => {
         }
     };
 
-    const updateCredits = async (credit: number) => {
-        const response = await axios.post('/api/update-credits', {
-            credit
-        });
+    const updateCredit = async (value: number) => {
+        try {
+            const response = await axios.post('/api/updateUserCredit', {
+                credit: value
+            });
 
-        console.log("Atualizado", response.data);
-    };
-
+            console.log(response.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     
 

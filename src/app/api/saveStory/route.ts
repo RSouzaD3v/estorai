@@ -6,6 +6,7 @@ import uuid4 from 'uuid4';
 export async function POST(req: NextRequest) {
     const { userId } = getAuth(req);
     const { story, subject, type, ageGroup, imageStyle, imageUrl } = await req.json();
+    console.log(imageUrl);
 
     // Verifique se story é válido antes de fazer o parse
     let storyOutput;

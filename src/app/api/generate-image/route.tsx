@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
         );
 
         const output = response.data;
+        console.log(output);
         return NextResponse.json({ response: output });
     } catch (error) {
         console.error("Erro na requisição:", error);

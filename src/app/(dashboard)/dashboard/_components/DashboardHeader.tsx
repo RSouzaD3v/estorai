@@ -9,8 +9,8 @@ const DashboardHeader = () => {
     useEffect(() => {
         const getCredit = async () => {
             try {
-                const response = await axios.get('/api/update-credits');
-                setCredit(response.data.credits);
+                const response = await axios.get('/api/getUserCredit');
+                setCredit(response.data.credit);
             } catch (e) {
                 console.log(e);
             }
