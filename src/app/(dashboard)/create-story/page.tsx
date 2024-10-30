@@ -64,6 +64,8 @@ const CreateStory = () => {
             });
 
             const firebaseStorageImageUrl = imageResult.data.imageUrl;
+            console.log(firebaseStorageImageUrl);
+            
             await saveStory(result.response.text(), "null", "null", "05-08", "Realistic Cartoon", firebaseStorageImageUrl);
             await updateCredits(1);
             setLoading(false);
